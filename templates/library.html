@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t.nav_library }}{% endblock %}
+
+{% block content %}
+
+<div class="library-controls">
+    <div class="search-row now-playing-card">
+        <input type="text" id="libSearch" placeholder="{{ t.search_placeholder }}"/>
+    </div>
+    
+    <div class="sort-row">
+    <span>{{ t.label_sort_by }}:</span>
+    <a href="#" class="sort-link active" data-sort="created_at">{{ t.sort_date }}</a>
+    <a href="#" class="sort-link" data-sort="rank">{{ t.sort_rank }}</a>
+    <a href="#" class="sort-link" data-sort="title">{{ t.sort_title }}</a>
+    <a href="#" class="sort-link" data-sort="artist">{{ t.sort_artist }}</a>
+    </div>
+    <div id="libsongCountDisplay" class="sort-row"></div>
+</div>
+
+<div id="libraryList" class="song-grid interactive-list"></div>
+<div id="artistIndex" class="artist-index"></div>
+
+<div id="editModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <img style="width:50px;" src="/static/karaoke.png"/>
+            <h3 style="margin-right: auto; padding-left:10px;">{{ t.modal_edit_title }}</h3>
+            <button class="close-x" onclick="closeModal()">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABK0lEQVR4nO2Z/QnCMBDF6y42qcU1BMEJJeE2qE11Dp1CFHdQIkEKKta29lrvyj3ovy+/l48muUSRSCQSiYaSj/yErb/VThudH0y8mfXhD7NdHPxtks3Rzddqm1jlTlY7b1R+xg4BD/hj8LfaXVBDPMOXH2YIeIX3qCHCnDQq37+ZP0Lo/GjSYtrF36TF9AN82Ul7lDVR0UOdR6Iv30EaGxQeu9G/wGM1/lf4rhAk4H+FIQXfFookfKlaOFUsycI3C+GupOGbhCAP3yYEWfhSkBQLoyunzc3G2SqiKuA8AsB5DcC3v1D1dKIRAjjvA8B5JwbOZyHgfBoFzvcB4HwjA853YuBclfA1daEA0cUfvofAqQuFmijbytynEOxqo6OoTo/ifUAkEolEo9QdHgweYFAnKhYAAAAASUVORK5CYII=" alt="multiply">
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <img id="editThumb" class="modal-thumb" src="" alt="Thumbnail">
+            
+            <input type="hidden" id="editId" />
+            
+            <div class="input-group">
+                <label>{{ t.label_title }}</label>
+                <input type="text" id="editTitle" placeholder="{{ t.placeholder_title }}" />
+            </div>
+            
+            <div class="input-group">
+                <label>{{ t.label_artist }}</label>
+                <input type="text" id="editArtist" placeholder="{{ t.placeholder_artist }}" />
+            </div>
+
+            <div class="input-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <label style="margin-bottom: 0;">{{ t.label_lyrics }}</label>
+                    <button onclick="autoUpdateLyrics(this)" class="btn-small" title="{{ t.title_auto_fetch }}">⚡</button>
+                </div>
+                <textarea id="editLyrics" rows="7" placeholder="[00:12.34] ..."></textarea>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button id="deleteEditBtn" class="btn btn-delete">
+        <img src="data:image/png;base64,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" alt="delete-forever">
+    </button>
+    
+    
+    
+    <button id="saveEditBtn" class="btn btn-save" style="margin-left: auto;" onclick="saveEdit()">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNklEQVR4nO2YTQ6CMBBGvxUeB9fK9fDnKLpz4wEk3kTc6BkcQ1ISbMACnQ5F5yWTQEqmfZm2IQMoijKUBMAewB0ATRQHsw4vdhMKUCNOvjKlSbTqGK8nCgGZeHLIuBYqIZICeJjnM4CFT7Kx4y6u1hYqOnIvfSsTWqTtPHTlTn0qIyXSlotaco+WiU1ktEyMIvaZOWLGIrVMNf7CzEUGzR/TrRW1SGFJXOYq8g2SFKn/xdbgJTN5b57r6/3htmOfc0UuJZIYmboyXFFVIu/xT8UmMjWkIpFBKhIZxHlrheqylOZGTCREJLosGwkRV5fFh3WjMmPX1/vD0GeIuOZXESZIRSxUhAlSEQsVYYJU5F9EyPHODXHN/7Mis91apaMBN6VI1rOJJ9KAk2jiBW3ASTbxFEXBJ2/AeC/4KqDlFwAAAABJRU5ErkJggg==" alt="save">
+    </button>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='library.js') }}"></script>
+{% endblock %}
+
+
+
+
+
+ 

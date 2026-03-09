@@ -1,0 +1,12 @@
+{
+    "db_folder": "C:\\KALAOK",
+    "media_folder": "C:\\KALAOK\\DOWNLOAD",
+    "bg_video_folder": [
+        "C:\\Videos\\Music",
+        "D:\\Videos\\Travel"
+    ],
+    "default_volume": 80,
+    "language": "en",
+    "no_cache": false,
+    "port": 5555
+}

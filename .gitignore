@@ -1,0 +1,44 @@
+# ── Runtime config (contains local paths — never commit) ──────────────────────
+config.json
+
+# ── Databases ─────────────────────────────────────────────────────────────────
+*.db
+*.db-shm
+*.db-wal
+
+# ── Downloaded media ──────────────────────────────────────────────────────────
+# Add your MEDIA_FOLDER path here if it lives inside the project directory.
+# By default it points to C:\KALAOK\DOWNLOAD so nothing to ignore here,
+# but if you ever move it inside the repo, add it:
+# downloads/
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ── Virtual environments ───────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ── OS junk ───────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log

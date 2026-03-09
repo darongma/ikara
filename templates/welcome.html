@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ t.nav_remote }}{% endblock %}
+{% block content %}
+
+<div class="welcome-container">
+    
+    <div class="now-playing-card">
+        <h3 class="head3">{{ t.nav_stage }}</h3>
+        <div class="song-card">
+            <div id="now-album-art"></div>
+            <div id="ctrlTitle" class="info" data-idle="{{ t.stage_idle or 'Stage is Idle' }}">
+                {{ t.stage_idle or 'Stage is Idle' }}
+            </div>
+        </div>
+
+        <div class="media-buttons">
+            <button class="control-btn restart-btn" onclick="sendMediaControl('restart')" title="{{ t.btn_restart or 'Restart' }}">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABg0lEQVR4nO2asU7DMBCGP2BAYmBgQG1ZWNg6MfIKYeUVeAKgO2XgFXiFPgFLERsbGy/QFQkJClJBCCOji1RVKnVC0pzNfZKHJJfc/bJjn3MBwzDKcggMgVfANdzGEktWVMSFguDdnNYv0hP+hglwArRpnjZwKjG50J65EWMvQhtnEpsfZgsZi3ELfbQktpcQ43wsasWFxmdCloQzIcpwmoWsA+dNCpm3+hbhAHgo4VONkA3gEvgs6XMhf3lo6L0+DRqJ7UeMQraAqym7e2A/NiFHwKNcfwN6wFoFPpcmZBe4nrp2C+xV6LN2IavAsSR4/tyTHK9U7LNWIV3gbup4AGzX5LNWIflMNArcBKkV8iWz02bVwWFC/vnQ6qbysicz/Sa1ICaXoiSXNEaRxruZFu3GypUQomqrm8zHhyZwJkQZzoQow4XGlyd5Gkpus+xIbM8EMBRjX7PTRq9I6S0T44nU7Do0T0dEvEtswWXq/i+rdjTl6ZxMujAvjkb5w4BhGPzwDeGk6cjVhr99AAAAAElFTkSuQmCC" alt="first">
+            </button>
+            <button id="playPauseBtn" class="control-btn play-btn" onclick="sendMediaControl('toggle')" title="{{ t.btn_play_pause or 'Play/Pause' }}">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA9ElEQVR4nO2aSw6CQBBE6xiAR8Lj+DkAXgvvJLjAVZsxTUIMOA0Yp4n1kt4VoV5mFiQNQAhZyh5ADeAOQBJPq13KuRIXB+VlYqo5JxEe6AAcAORITw7gqJ3EejJXDQcJb5y0W7hmUVoNZ/BHpt0aS7i/i14Raz+K/AihiDOEIv8iIh9mTXYKiizJx0S+/b5RKDKAIgYoEoMiCkViUGQARQxQJAZFvIrIyKzJTkERbwhFnCEUcYZQxBli7ddo0MPK7Z2ddrvBQK3hsLPzxnnO6q3UcKc7uwLpKVTiod3Ma+oq8jmxifV0T6lH2C9HN/nDACEEL56MHtiMakfrWQAAAABJRU5ErkJggg==" alt="pause-squared">
+            </button>
+            <button class="control-btn next-btn" onclick="sendMediaControl('next')" title="{{ t.btn_next or 'Next' }}">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABdUlEQVR4nO2aMU4CQRRAn1iYWFhYGMCGxo7KG1ivLVfwBCo9WHgFr8AJbDB2dl6AztLGKJogMYwZ/ZNsSNRZCnf+8F8yIcv+Df9lhtm/fMAwjFU5BsbAK+BqHlPJpagqcZFA8u6HMawyE/6CGXAKtKifFnAmObnYmbmRYC+RGueSm19mfzKV4Cbp0ZTcXmKCw1pMFRebn4n8E85E1kFkAGyRgYgDJsDRisksj1pF/FgAV8COdpG5vD5IiVP1M5IR6QJ3peMRsKdRxNMATqR88O89yfEGykQCHeC6dO4WOEChSKAHPMr5N6APbGoU8ezKbhbi7oFDjSKBQna08g6nUsSzDVwCHybyjS0t1v3L3tO+/Xa03xAbOZQo3VyKxnkuZfwihwerSQ6PuoNcfnyoA2ciieFMJDFcbH6hxEih5bbMvuT2TARjCfY9u9ToV2m9FRI8k55dm/ppi8S75Bbdph7+cvdV054OFDKFoTmq8g8DhmHwxSe/Deni8EhajAAAAABJRU5ErkJggg==" alt="last">
+            </button>
+        </div>
+
+        <div class="volume-section">
+            <div class="vol-header">
+                <span>{{ t.label_volume or 'VOLUME' }}</span>
+                <span id="volLabel">80%</span>
+            </div>
+            <div class="slider-wrapper">
+                <input type="range" min="0" max="100" value="80" class="slider" id="volumeSlider" 
+                       oninput="handleVolumeChange(this.value)" onchange="volumeChanged(this.value)">
+            </div>
+        </div>
+    </div>
+
+
+    <div id="nextUpPanel" class="now-playing-card" style="display: none;">
+        <h3 class="head3">{{ t.label_up_next or 'Up Next' }}</h3>
+        <div class="song-card">
+            <div id="album-art"></div>
+            <div class="info" id="nextSongInfo">
+            </div>
+        </div>
+    </div>  
+
+</div>
+
+<script src="{{ url_for('static', path='welcome.js') }}"></script>
+{% endblock %}

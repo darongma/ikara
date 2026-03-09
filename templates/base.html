@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="{{ current_lang or 'en' }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/static/karaoke.png">
+    <title>{{ t.app_title }} - {% block title %}{% endblock %}</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="data:image/png;base64,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"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}" />
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+  // Use the 'tojson' filter to ensure quotes and special characters are handled
+  window.I18N = {{ t | tojson }};
+  window.I18N_LANG = "{{ current_lang }}";
+    </script>
+  </head>
+  <body>
+    <div class="menu-container">
+      <button class="hamburger-trigger" onclick="toggleMenu(event)">☰</button>
+      <div id="dropdownMenu" class="menu-dropdown">
+        <div class="menu-item" onclick="openNameModal()" style="display: flex; align-items: center;">
+          <span class="menu-emoji"><img style="width:40px;" src="/static/karaoke.png"/></span>
+          <span id="displayUserName" style="font-weight: bold; padding-left: 20px;">Singer</span>
+        </div>
+        
+        <div class="menu-item" onclick="window.location.href = '/'">
+          <span class="menu-emoji">📱</span>
+          <span>{{ t.nav_remote }}</span>
+        </div>
+        <div class="menu-item" onclick="window.location.href = '/search'">
+          <span class="menu-emoji">🔍</span>
+          <span>{{ t.nav_search }}</span>
+        </div>
+        <div class="menu-item" onclick="window.location.href = '/library'">
+          <span class="menu-emoji">📚</span>
+          <span>{{ t.nav_library }}</span>
+        </div>
+        <div class="menu-item" onclick="window.location.href = '/queue'">
+          <span class="menu-emoji">📋</span>
+          <span>{{ t.nav_queue }}</span>
+        </div>
+         <div class="menu-item" onclick="openSystemModal()">
+          <span class="menu-emoji">💻</span>
+          <span>{{ t.nav_system }}</span>
+        </div>
+        <div class="menu-item" onclick="window.location.href = '/host'">
+          <span class="menu-emoji">📺</span>
+          <span>{{ t.nav_stage }}</span>
+        </div>
+        <div class="menu-item">
+        <a href="https://paypal.me/darongma" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+          <span class="menu-emoji">☕</span>
+          <span>{{ t.nav_coffee }}</span>
+        </a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="navbar">
+      <a href="/" class="nav-link {% if request.url.path == '/' %}active{% endif %}"
+        ><span>📱</span> {{ t.nav_remote }}</a>
+      <a href="/search" class="nav-link {% if request.url.path == '/search' %}active{% endif %}"
+        ><span>🔍</span> {{ t.nav_search }}</a>
+      <a href="/library" class="nav-link {% if request.url.path == '/library' %}active{% endif %}"
+        ><span>📚</span> {{ t.nav_library }}</a>
+      <a href="/queue" class="nav-link {% if request.url.path == '/queue' %}active{% endif %}"
+        ><span>📋</span> {{ t.nav_queue }}</a>
+    </nav>
+
+    <div class="main-content">
+      <h1 class="head1">{{ t.app_title }}</h1>
+      <div class="content">{% block content %}{% endblock %}</div>
+    </div>
+
+<div id="nameModal" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <img style="width:50px;" src="/static/karaoke.png"/>
+      <h3>{{ t.modal_user_title }}</h3>
+      <select id="langSelect" style="background: #333; color: white; border: 1px solid #555; border-radius: 4px; padding: 2px 5px;">
+          <option value="zh" {% if t.nav_remote == '遥控' %}selected{% endif %}>中文 (ZH)</option>
+          <option value="en" {% if t.nav_remote == 'Remote' %}selected{% endif %}>English (EN)</option>
+      </select>
+    </div>
+    <div class="modal-body" style="padding-bottom: 20px;">
+      <p>{{ t.modal_user_label }}</p>
+      <input type="text" id="userNameInput" placeholder="{{ t.modal_user_placeholder }}" />
+    </div>
+    <div class="modal-footer">
+      <button onclick="saveUserName()" class="btn btn-sing">
+        {{ t.modal_user_btn }}
+      </button>
+    </div>
+  </div>
+</div>
+
+    <div id="systemModal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header"><img style="width:50px;" src="/static/karaoke.png"/><h3 style="margin-right: auto; padding-left:10px;">{{ t.modal_sys_title }}</h3></div>
+        <div class="modal-body" id="systemInfoBody">
+          <p>Loading stats...</p>
+        </div>
+        <div class="modal-footer">
+          <button onclick="closeSystemModal()" class="btn">{{ t.modal_sys_close }}</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleMenu(event) {
+        if (event) event.stopPropagation();
+        const menu = document.getElementById("dropdownMenu");
+        menu.classList.toggle("show");
+      }
+
+      window.onclick = function (event) {
+        if (!event.target.matches(".hamburger-trigger")) {
+          const menu = document.getElementById("dropdownMenu");
+          if (menu && menu.classList.contains("show")) {
+            menu.classList.remove("show");
+          }
+        }
+      };
+
+      function checkUser() {
+        const name = localStorage.getItem("karaoke_name");
+        if (!name) {
+          openNameModal();
+        } else {
+          document.getElementById("displayUserName").innerText = name;
+        }
+        return name;
+      }
+
+      function openNameModal() {
+        document.getElementById("nameModal").classList.add("active");
+        const existing = localStorage.getItem("karaoke_name");
+        if (existing) document.getElementById("userNameInput").value = existing;
+      }
+
+  async function saveUserName() {
+  const nameInput = document.getElementById("userNameInput");
+  const langSelect = document.getElementById("langSelect");
+  const name = nameInput.value.trim();
+  const selectedLang = langSelect.value;
+
+  // Get the last known language from localStorage, default to 'en'
+  const currentSavedLang = localStorage.getItem("app_lang") || 'en';
+
+  if (name) {
+    try {
+      let languageChanged = false;
+
+      // Debug to see why it was failing before
+      console.log(`[DEBUG]: LocalStorage Lang: ${currentSavedLang}, Selected Dropdown: ${selectedLang}`);
+
+      // Only make the AJAX call if the dropdown doesn't match our stored preference
+      if (selectedLang !== currentSavedLang) {
+        const response = await fetch('/api/set_language', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lang: selectedLang })
+        });
+        
+        if (response.ok) {
+          languageChanged = true;
+          // Successfully changed on server, now update local storage
+          localStorage.setItem("app_lang", selectedLang);
+        }
+      }
+
+      // Always update the name and UI identity
+      localStorage.setItem("karaoke_name", name);
+      document.getElementById("nameModal").classList.remove("active");
+      document.getElementById("displayUserName").innerText = name;
+      
+      // Confirm to user and back-end server console
+      showStatus(`${t('status_singer_updated')}: ${name}`);
+      console.log(`[SERVER]: User identity saved: ${name}. Reload required: ${languageChanged}`);
+
+      // If language changed, we must reload to apply the new translations.json
+      if (languageChanged) {
+        setTimeout(() => {
+          window.location.reload();
+        }, 800); 
+      }
+    } catch (error) {
+      console.error("Failed to save settings:", error);
+      // Fallback: save name locally so the user isn't stuck
+      localStorage.setItem("karaoke_name", name);
+      document.getElementById("nameModal").classList.remove("active");
+    }
+  }
+}
+
+      async function openSystemModal() {
+    document.getElementById("systemModal").classList.add("active");
+    const body = document.getElementById("systemInfoBody");
+    
+    // Translated Loading State
+    body.innerHTML = `<p>${t('sys_fetching')}</p>`;
+
+    try {
+        const res = await fetch("/api/system/info");
+        const data = await res.json();
+        
+        // Translated Labels with manual concatenation
+body.innerHTML = `
+    <div class="info-grid">
+        <label>⚡ ${t('sys_cpu')}:</label> <span>${data.cpu_load}</span>
+        <label>📟 ${t('sys_mem')}:</label> <span>${data.memory_free}/${data.memory_total}</span>
+        <label>💽 ${t('sys_disk')}:</label> <span>${data.disk_free}/${data.disk_total}</span>
+        
+        <hr style="grid-column: span 2; border: 0; border-top: 1px solid #444; margin: 8px 0;">
+        
+        <label>📂 ${t('sys_path')}:</label> <small>${data.app_folder}</small>
+        
+        <label>🎬 ${t('sys_video')}:</label> 
+        <div>
+            <small>${data.bg_folder}</small><br>
+            <span class="smaller">
+                ${t('sys_size')}:${data.bg_folder_size}, ${t('sys_file')}:${data.bg_file_count}
+            </span>
+        </div>
+        
+        <label>🎵 ${t('sys_media')}:</label> 
+        <div>
+            <small>${data.media_folder}</small><br>
+            <span class="smaller">
+                ${t('sys_size')}:${data.media_folder_size}, ${t('sys_file')}:${data.media_file_count}
+            </span>
+        </div>
+        
+        <hr style="grid-column: span 2; border: 0; border-top: 1px solid #444; margin: 8px 0;">
+        
+        <label>💻 ${t('sys_os')}:</label> <span>${data.os_name}</span>
+        <hr style="grid-column: span 2; border: 0; border-top: 1px solid #444; margin: 8px 0;">
+        <label>👨‍💻 ${t('sys_dev')}:</label> <span><b>${data.developer} ${data.email} <a href="${data.website}" target="_blank" style="text-decoration: none; color:#fff;">${data.website}</a> 
+           <a href="${data.paypal}" target="_blank" style="text-decoration: none; color:#fff;">${data.paypal}</a></b></span>
+    </div>
+`;
+
+    } catch (e) {
+        // Translated Error State
+        body.innerHTML = `<p>${t('sys_error')}</p>`;
+    }
+}
+
+      function closeSystemModal() {
+        document.getElementById("systemModal").classList.remove("active");
+      }
+
+
+      
+
+
+
+      document.addEventListener("DOMContentLoaded", checkUser);
+      const socket = io();
+    </script>
+    <script src="{{ url_for('static', path='notifications.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

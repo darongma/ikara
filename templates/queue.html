@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Queue{% endblock %}
+{% block content %}
+<div class="content">
+    <div class="now-playing-card">
+        <button id="randomq" class="btnbig" onclick="randomQueue(5)">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACXUlEQVR4nO2awW4TMRRFD+qSdA/T/BFEs0FQ+AJU2i6hZYuQ+k2UNgHKpzSBLWGDiBJk6UYatWQynbE9NrwjWapq6frNHY/99PLAMAzDMAyjObvAMXABTIEFsOppLBSDi+UIGBCYfeB7jw+8bXwDnoZ6+LfAUgt9Bp4BBbBDf7i19/Rivig2F+Op74X2JfwbeEm6HCjGpc+dsFvZ9ik/fNUEF+vM15lwLMFP5MOVYj70IXYhMffN58JzxXzuQ2wqMXfg5cKeYr72IbaQ2LbTvgQmwE+NMTDysH4b3Z1KntCZlUYdZzV38/sOa3fRbRJ3I7YJlZr/BbwGHuhzOdH/3NzjZkt51Y1mwETzLsibnGjussW6XXWjGTCvOSQfau5Hi3W76iZhQBHIgCIlA8aad9ty01Z1ucRd6aobzYBR5bB6o7dT6O/1YfWoxbpddaMZgK6kTdfVO9rTRTeqAehKutS3O9f2bPPmfelGNyA1kjagDJQ2Z2HAWaC0OQsDykBpczYGTAKlzdkYMA+UNv8TBhT/gwHjQGlzNgaMAqXN2RgQMm3OxoCQaXM2BsQgugFlQlXhu8TtRciqwlhVGKsKcxurChPGAKsKs103mgGjQOmtVYVJpCq8aPjzeEpVYa8/j09rDqNUGfpskPgoMdcplgsvFPMHH2JHEnN9eDlwD/iqmF/5EByoA3OlFrTUOfTdJoeaDteNkgeJP/y6UfKJb/HTSqvslVrRhgm0yg71za+3/XJD8uRtJ8xq7ua+xyzEm7/JQIfLua6Zvtvlr3Xau5ju34rWMAzDMAyDv/MH8kdQRAOYmPEAAAAASUVORK5CYII=" alt="external-Dice-nft-and-gamefi-outline-lafs">
+        <button id="clearq" class="btnbig" onclick="clearQueue()">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACL0lEQVR4nO2WT2oUQRTGfySajYmCxkGvYKJXUC8gRiQnECQh6JhDSHDn3qw0OYjRA5iIf+NeNwbRhdmk5MFX8Gi6exphut9k+oNihnqvuupH1fuqoFevXlOpBWAbOAJS0HYEvNBaK7UdYKGpYTOYSuWduE5c3dAaf9YlZdroSqPW2YO0rDR1IGlCWqVOHUh0pR4kmFIPEkxp6kHeAns1+W1bbPpfEIN4fRpAoin1IMGUepBgSlHttzWQvTHbb2sg0fQA+BEZZA5YBXaBT8AfNfu/o5jlmC5EBbkHfGtwDA+BlVEf6wJkBnjm5n4HPAKuAefUloDHwL7L29LYMCAZ4i/wsG5xiq0pN8N0Zr/F45QhbjZn55aDuduV/WbNuZqwnTBdBDaBxZK5LLahX9O6xn4FzjYFGYdWXU3k4zRU3wEwcLkD9SXVimnW9d3vEmRXc1lhZ11yi8swHuJAORTAX3UJ8llzmTt5DQoLL4J5LSlm90xnIL8113xJ7HLBaj8CV0ryFhS3b00MyNWSvPOK/5r0o7Uc4WjtFFzItNig2L01P1H/y3E9y+va84L97jv73Wxgv7b4bL/vq+z3TQsg34EzuhAP1bfmdmRYcSHmWLbfDY39UnYhtq0V90SxZ0dT3QaOgRPgDkG05WDWdWSqNKudONaYpwTSjINJqoWhLrt5tWXVRq6JE0HUvZQ7k71i7QE4qsasJsIcpypZ0ZoD2dvJLkG7NK19kMVarLSw/wF7w14D68w0LwAAAABJRU5ErkJggg==" alt="delete-view">
+        </button>
+        <div style="clear: both;"></div>
+    </div>
+    
+    <div class="now-queue-card">
+        <div id="songCountDisplay"></div>
+        <div id="queueList" class="queue-list"></div>
+        <div id="empty-msg" style="display: none;">{{ t.queue_empty }}</div>
+        <div style="clear: both;"></div>
+    </div>
+    
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='queue.js') }}"></script>
+{% endblock %}

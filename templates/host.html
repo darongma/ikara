@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang or 'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/static/karaoke.png">
+    <title>{{ t.app_title }} - {{ t.nav_stage }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <style>
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; background: black; overflow: hidden; 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+        }
+
+        body { background-image: url('/static/Logo.jpg'); background-position: center; background-size: cover; }
+        
+       /* Ensure the wrapper handles the transition */
+.stage-wrapper { 
+    position: relative; 
+    width: 100vw; 
+    height: 100vh; 
+    height: 100dvh;
+    color: white; 
+    opacity: 1;
+    /* 1 second is usually the sweet spot for transitions */
+    transition: opacity 1.0s ease-in-out; 
+    background-color: rgba(0, 0, 0, 0.192);
+}
+
+/* When this class is added, the screen goes black */
+.stage-wrapper.transitioning {
+    opacity: 0;
+}
+
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+
+/* Base: Video is Landscape or Screen is Horizontal */
+.bg-landscape {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+}
+
+/* Base: Video is Portrait AND Screen is Horizontal (Laptop/Desktop) */
+.bg-portrait {
+    width: auto !important;
+    height: 200% !important; 
+    top: 65% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    object-fit: contain !important;
+}
+
+/* THE MAGIC: If the SCREEN is vertical (Phone/Tablet), 
+   force the video to behave like landscape (Fill Screen) 
+   regardless of what class JS added. */
+@media screen and (orientation: portrait) {
+    .bg-portrait, .bg-landscape {
+        width: 100% !important;
+        height: 100% !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        object-fit: cover !important;
+    }
+/* Middle: 3-Row Lyrics */
+    .lyrics-stage {
+            bottom: 100px !important;
+        }
+    .bgblur {
+        display: none !important; /* No blur needed if video fills screen */
+    }
+    body {
+        background-image: url('/static/logo-mobile.jpg');
+    }
+}
+
+        /* UI Layers */
+        .ui-layer { position: absolute; z-index: 10; width: 100%; height: 100%; pointer-events: none; }
+
+       
+
+        /* Top Bar: Current Song Info */
+        .top-info { 
+            position: absolute; top: -7px; width: 100%; text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            padding-bottom: 10px;
+            border-radius: 8px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Middle: 3-Row Lyrics */
+        .lyrics-stage {
+            position: absolute; bottom: 0px; width: 100%; text-align: center;
+        }
+        .lyric-row { transition: all 0.3s ease; min-height: 1.2em; text-shadow: 3px 3px 10px #000; }
+        #prevLine { font-size: 2rem; color: rgba(255, 255, 255, 0.7); }
+        #currentLine { font-size: 3.8rem; color: #f1c40f; font-weight: bold; margin: 0px 0; }
+        #nextLine { font-size: 2.5rem; color: rgba(255,255,255,0.8); }
+
+        /* Bottom Left: QR */
+        .qr-container { position: absolute; bottom: 5px; left: 5px; background: white; padding: 5px; border-radius: 5px; }
+
+        /* Bottom Right: Next Song Up */
+.next-up { 
+    position: absolute; 
+    bottom: 5px; 
+    /* 1. Start off-screen (Right) */
+    right: -100%; 
+    text-align: right;
+    background: rgba(0,0,0,0.6); 
+    padding: 10px; 
+    padding-top: 5px; 
+    padding-bottom: 5px; 
+    border-radius: 8px;
+    
+    /* 2. Smooth movement definition */
+    transition: right 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 1000;
+}
+
+/* 3. The position it slides TO */
+.next-up.active {
+    right: 5px; 
+}
+
+        /* Restored Purple Color for NEXT word */
+        .next-up small { color: #7c74e2; text-transform: uppercase; font-size: 0.7rem; font-weight: bold; display: block; }
+        .next-up p { margin: 0; font-size: 1rem; }
+
+        #startOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000000c7; z-index: 10000; display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+
+        #displayTitle { font-size: 2.5rem; color: #f1c40f; }
+        #displayArtist { font-size: 2rem; font-style: italic; color: #d6daaa; text-transform: uppercase; }
+
+        .progress-container { position: absolute; top: 52px; left: 10%; width: 80%; text-align: center; }
+        #progressFill { border-radius: 4px; height: 100%; background: rgb(0, 110, 255); width: 0%; }
+        .progress-bar { height: 8px; background: rgba(10,10,10,0.6); border-radius: 4px; }
+        
+        #nextSinger { color: #1DB954; font-size: 0.9rem; font-style: italic; text-transform: uppercase; }
+        .playtime { font-size: 1.5rem; font-family: "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace; }
+        #currentTimeText, #durationText { color: #ececec; }
+        
+        #host-now-album-art { margin-top: 8px; margin-right: 10px; }
+        #host-now-album-art img { width: 50px; height: 50px; }
+
+        .bgblur{
+            position: absolute;
+            top:0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+    </style>
+    <script>
+  // Use the 'tojson' filter to ensure quotes and special characters are handled
+  window.I18N = {{ t | tojson }};
+  window.I18N_LANG = "{{ current_lang }}";
+    </script>
+</head>
+<body>
+
+
+
+<div class="stage-wrapper">
+    <div class="bgblur"></div>
+    <video id="bgVideo" loop muted></video>
+    <video id="mainPlayer"></video>
+
+    <div class="ui-layer">
+        <div class="top-info">
+            <span id="host-now-album-art"></span>
+            <span id="displayTitle">{{ t.status_ready }}</span>
+            <span id="displayArtist">{{ t.status_scan_qr }}</span>
+        </div>
+
+        <div class="lyrics-stage">
+            <div id="prevLine" class="lyric-row"></div>
+            <div id="currentLine" class="lyric-row"></div>
+            <div id="nextLine" class="lyric-row"></div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progressFill"></div>
+            </div>
+            <div class="playtime">
+                <span id="currentTimeText">0:00</span> / <span id="durationText">0:00</span>
+            </div>
+        </div>
+
+        <div id="qrcode" class="qr-container"></div>
+
+        <div class="next-up" id="nextUpPanel" style="display: none;">
+            <span style="float: left; padding-right: 10px;">
+                <p id="nextSinger" style="margin: 0px;"></p>
+                <p style="margin: 0px;"><span class="un-label">{{ t.label_up_next }}</span><font id="nextSongInfo"></font></p>
+            </span>
+            <span id="un-art"></span>
+        </div>
+    </div>
+</div>
+
+<div id="startOverlay" onclick="toggleFullScreen();startHost();">
+    <h1 style="color: white; border: 2px solid #1DB954; padding: 20px 40px; border-radius: 10px;">{{ t.btn_enter_stage }}</h1>
+</div>
+
+
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="{{ url_for('static', path='host.js') }}"></script>
+<script src="{{ url_for('static', path='notifications.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t.nav_search }}{% endblock %}
+
+{% block content %}
+
+<div class="now-playing-card">
+<div class="search-area">
+    <input type="text" id="libSearch" placeholder="{{ t.search_placeholder }}" />
+    <div class="btn-row">
+        <button id="searchVideoBtn" class="video-btn">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA6klEQVR4nO2WPQrCQBBGX6PeIQhexUbwNraWnsXS1sJS8OcEWnkM0foTwYQVFUTjurOZBx8hk7DJI7PZBcdx3mELyGjWoYiMp+Kh8KKWWl0ughERGU1FdiLWkIskhlwkMeQiTRJZADtggHERBZkDvZrG/ZvIKTiOgXZN40cXKYBpcH4AhjU9I6pISR/Y/6jdFFPkSgsYAcfbtTMwATrWREq6wCy4Z8N3yEWa3Fp965O9yOX3e8plQZT1Lcoyl01jTOQiiSEXSQy5iBURGU1FdiLvtFtKdbkIadWV7RxZJ/Ayn2b15Os5jsM9F85+nSCshqh0AAAAAElFTkSuQmCC" alt="video--v1">
+        </button>
+        <button id="searchAudioBtn" class="audio-btn">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACl0lEQVR4nO2Zu2sUURjFfxFJk2wawSAkFrpaia6IlUGQqJWdYBVs/APsLNQ0CjZioYXkYWUhSdbKV2MwJIj/gZpC8FGIERXWRBGRjFw4A8OyO3Pn7uzMzTIHbjP3+2bO4XvMfUCJEiWywClgFlgFNoCgy2MDeAvMAONZCNgPLOdAPGksAVVXEceBH3rRF+AycAgYoPsYAGrAFX3bcPgOjLlEIhQxBwxSHCrAfERMqsgsR0T0UTz6gAVxepGmsMN0KjISrSKzJm5WDWBWxqYmfMNVcZu2MV6V8cEukdkJnAYuAQ+A18Bv4JqFb03cTGtOxE8Zd5pW29Q0zgE3gGfA55gW+8cyvQJxTET4YhcMA7eAVzE/zgawAtwBLgBHUn4zsLXtRMhKE+lPwCPgOnAW2NumC3on5F+kq+xI4eedkMDCdztwAJgAbgLPt4KQimrgPHAbeAn8iil474TUgXfAZguym5qray11xmchgcZf/SfuAxeBk21qx1shE6oDUw89W+ytUAqJQymEUgg9IWS0F4SMAE+3mpBh7T7f+75EGY3x3dVmU/UVuOeTkJGEFHkYOQExu8Yo+jVntgCZ8ksydEmRcPtsotaMo5r7kKcQ1xRp6LmJXDMea+5unkJcUyT0eyIx/YpEKMII3Z2nENcU2afjzlZp2NDy3haZCOkkRaqKTENR+yhb20h0JbWySBFXBLZC4g7oskwRF1TSHNAlHZlmlSIuqInbGxvjGRmbgwHfMCluUzbG45FrBRNKXzCk/5XhdsLWaUkO8x5d9NTFaTGNYzVS1AsFR2YoIuIbsCftC8YiYtZ0yXI4p1usQX1rMpJORsQx1xdWtRwJCh6LLpFo1wCm1fbWcyC+rhPKqTSFXaJECdriP/0f9LzXZsrXAAAAAElFTkSuQmCC" alt="apple-music">
+        </button>
+    </div>
+</div>
+</div>
+
+<div id="localLibrary">
+    <div id="libsongCountDisplay" class="sort-row" style="padding: 10px;"></div>
+    <div id="libraryList" class="song-grid interactive-list"></div>
+</div>
+
+<div id="youtubeLibrary">
+    <div id="songCountDisplay" class="sort-row" style="padding: 10px;"></div>
+    <div id="resultsList"></div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='search.js') }}"></script>
+<script src="{{ url_for('static', path='library.js') }}"></script>
+{% endblock %}
