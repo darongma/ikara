@@ -1,4 +1,4 @@
-# 🎤 iKARA uOK
+# 🎤 iKARA 愛卡拉
 
 A self-hosted karaoke server for your local network — runs on Windows, streams to any device with a browser.
 
