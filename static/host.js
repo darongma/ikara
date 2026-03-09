@@ -75,6 +75,7 @@ function toggleFullScreen() {
                  document.msExitFullscreen;
 
     if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        initKeepAwake();
         request.call(docElm).catch(err => {
             console.log("Error: ", err.message);
         });
@@ -435,3 +436,25 @@ function triggerManualSlide(stayFor = 5000) {
 player.onloadedmetadata = () => {
     if (player.duration > 0) runNextUpAnimation(player.duration);
 };
+
+
+
+// ── Keep-awake: Screen Wake Lock ──────────────────────────────────────────────
+// Tells the OS directly not to sleep the screen.
+// Re-acquired whenever the tab becomes visible again.
+let _wakeLock = null;
+
+async function initKeepAwake() {
+  try {
+    if ('wakeLock' in navigator) {
+      _wakeLock = await navigator.wakeLock.request('screen');
+      console.log('Screen wake lock active.');
+    }
+  } catch (err) {
+    console.warn('Wake lock failed:', err.name, err.message);
+  }
+}
+
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState === 'visible') await initKeepAwake();
+});
