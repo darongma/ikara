@@ -4,7 +4,7 @@ A self-hosted karaoke server for your local network — runs on Windows, streams
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-☕-yellow?style=for-the-badge&logo=paypal)](https://paypal.me/darongma)
 
-![iKARA uOK](static/karaoke.png)
+![iKARA uOK](static/phone_1.jpg)
 
 ---
 
